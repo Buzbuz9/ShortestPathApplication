@@ -58,7 +58,6 @@ public class BreadthFirstSearch extends Node{
        return topNode;
        }
    }
-
    //traverse the path
    public void traversal(Node s, Node e, Graph g){
    //run through all options and return a path
