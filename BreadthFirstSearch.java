@@ -58,11 +58,12 @@ public class BreadthFirstSearch extends Node{
        return topNode;
        }
    }
+   
    //traverse the path
    public void traversal(Node s, Node e, Graph g){
    //run through all options and return a path
    
-   //present graph in 2d array
+      try{
    
       //make a queue to store data
       Queue q = new Queue();
@@ -73,15 +74,16 @@ public class BreadthFirstSearch extends Node{
       s.setVisited(true);
       
       Node n = null; // node to be used to track traversal
-      Node next = null;
+      Node last = new Node();
       LinkedList<Node> neighbors;
       while(!q.isEmpty())  //while there is something in the queue
       {
          n = q.dequeue(); //set n to the top node of queue and remove that node from the queue
          //get and store all its neighbors 
+       
                   
         neighbors = adj.get(n.getID()); //get the linked list associated with the node we just dequeued
-        System.out.println("neighbors [0] = " + n.getID());
+        
          //reset color assocaited with n unless n.getState().equals("Start");
         
          for(int k=0; k < neighbors.size(); k++){  //loop through all the neighbors
@@ -92,31 +94,31 @@ public class BreadthFirstSearch extends Node{
                neighbors.get(k).setVisited(true);
                
                if(neighbors.get(k).getState().equals("End")){
-                     n = neighbors.get(k);  //set n to the end point
-                  	q.clear(); 		//clear the queue = stop the while loop 
+                     
+                     last = neighbors.get(k);  //set n to the end point
+                     q.clear(); 		//clear the queue = stop the while loop 
+                     break;
                      
                }
                
+               
                //color the cell associated with next yellow
             }
-           
-								
-				
+   
          }
 
-     
       }
       
       //if n doesn't equal end print error message to user
-      if(!n.getState().equals(e.getState()))
+      if(!last.getState().equals(e.getState()))
       {
-         System.out.println("No path exisits between the selected start and end points");
+         System.out.println("No path exists between the selected start and end points");
       }
       else
       {
          
          //else trace the path back
-         Node finalNode = n;
+         Node finalNode = last;
          
          //while there is still another node to look at and it isn't the start
          while(finalNode != null && !finalNode.getState().equals(s.getState()))
@@ -124,62 +126,18 @@ public class BreadthFirstSearch extends Node{
             //if it isn't the last node in the path
             if(!finalNode.getState().equals(e.getState())){
                //change the color of the cell associated with it
-               System.out.println(finalNode.getID());
+               System.out.print(finalNode.getID() + " ");
             }
             finalNode = finalNode.getPrev();
             
          }
       }
+      }catch(IndexOutOfBoundsException exception){
+         System.out.println("Graph Invalid");
+      }
    }
    
-   
 
-/*
-
-void traversal(Node s, Node e, LinkedList<Node>[] adj):
-	
-//takes start and end node and adj list as parameters
-
-LinkedList<Node>[] g=adj// adjacency list of graph
-
-		Queue<Node> q  		 //queue with enqueue and 
-dequeue
-		q.enqueue(s)
-		S.visited  = true    		//set start to 
-visited
-		
-While !q.isEmpty() 			///loop while the queue 
-isn’t empty
-		Node = q.dequeue()  		 //get the top node
-		Neighbors = g.get(node)    //find the neighbors of 
-the node from the adjacency list
-		* reset color the cell associated with node unless 
-node.state == start
-
-		for(k=0; k<= neighbors.length; k++)  //loop through 
-all the neighbors
-			If next.visited == false && next.state != obs	//once we find the next unvisited node that isn’t an 
-obstacle
-				q.enqueue(next)	//add it to the queue
-				Next.visited = true		//mark it as visited
-				Next.prev =node		//mark the current node as the prev for next node
-				If next.state == end   //if the end point has been reached
-					
-					q.clear() 		//clear the queue = stop the while loop
-					*color the cell associated with next yellow
-
-
-Final_node = e				//set the end point to final_node
-while(final_node != null || s)	//while there is another 
-node and it isn’t the start
-If node.state != end 		//if it isn’t the end node
-
-*color the cell associated with the node on the 
-graph yellow
-
-Final_node = node.prev 	//set the final_node to the node before it
-
-*/
 
 
 }
